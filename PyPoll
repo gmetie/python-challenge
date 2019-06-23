@@ -1,0 +1,59 @@
+print("Financial Analysis")
+print("------------------------------")
+
+import os
+import csv
+
+csvpath = os.path.join('PyBank', 'Resources', 'budget_data.csv')
+
+total_months = 0
+total = 0
+average_change = 0
+greatest_change = 0
+least_change = 0
+average_change_list = []
+history = []
+
+with open(csvpath, newline='') as csvfile:
+    csvreader = csv.reader(csvfile, delimiter=',')
+    
+    csv_header = next(csvreader)
+
+    first_row = next(csvreader)
+    previous = int(first_row[1])
+    history.append(int(first_row[1]))
+    total = total + int(first_row[1])
+    
+
+    for row in csvreader:
+        total_months = total_months + 1
+        total += int(row[1])
+        previous = history[len(history) -1]
+        history.append(int(row[1]))
+        average_change = int(row[1]) - previous
+
+        #print(average_change)
+        #print(greatest_change)
+
+        if average_change > greatest_change:
+            greatest_change = average_change
+        if average_change < least_change:
+            least_change = average_change
+
+        average_change_list.append(average_change)
+
+
+
+
+
+
+
+
+
+print("Total Months:" + str(total_months))
+print(("Total:") + "$" + str(total))
+print("Greatest Increase in Profits:" + "$" + str(greatest_change))
+print("Greatest Decrease in Profits:" + "$" + str(least_change))
+print("Average Change:" + "$" + str(sum(average_change_list)/len(average_change_list)))
+
+
